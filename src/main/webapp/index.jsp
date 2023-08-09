@@ -1,7 +1,12 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-${sessionScope.username}
-    <c:out value="${sessionScope}" />
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%--<%@include file="../../jspf/datasource.jspf"%>--%>
+${param["username"]}
+<c:if
+        test="${!empty sessionScope.currentSessionUser or !null==sessionScope.currentSessionUser}">
+    <c:redirect url="welcome.jsp"></c:redirect>
+</c:if>
 
 <html>
 <head>
