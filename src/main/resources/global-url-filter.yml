@@ -1,0 +1,9 @@
+2:
+  - /admin/*
+  - /admin/edit/*
+1:
+  - /welcome.jsp
+  - /user/edit/*
+  - /JspDemoServlet
+3:
+  /profile/update
