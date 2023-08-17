@@ -36,32 +36,56 @@ public class GlobalFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession(false);
         String servletPath = httpRequest.getRequestURI();
-        if (servletPath.startsWith(httpRequest.getContextPath()+"/login")) {
-            System.out.println("skipping global filter for the path:" + servletPath);
-            chain.doFilter(request, response);
+        handlePathAcess(request, response, chain, servletPath, "PERMIT_ALL");
+        if (null!=request.getAttribute("isPermitAll")) {
+            System.out.println("url was listed in PERMIT_ALL . so no further processing required");
+            return;
         }
-        if (null == session) {
+        if (!isValidSession(session)) {
+            System.out.println("you are not logged in! please login..");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
-        } else if (null != session.getAttribute("current_user")) {
-            User currentUser = (User) session.getAttribute("current_user");
-            handleLogedInUser(request, response, chain, session, servletPath, currentUser);
+        } else if (isValidSession(session)) {
+            User currentUser = (User) session.getAttribute("currentUser");
+            handleLogedInUser(request, response, chain, servletPath, currentUser);
         }
     }
 
-    private void handleLogedInUser(ServletRequest request, ServletResponse response, FilterChain chain, HttpSession session, String requestedURI, User currentUser) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest= (HttpServletRequest) request;
-        String contextPath = httpServletRequest.getContextPath();
-        if (rolURLMap.containsKey(currentUser.getRoleId())) {
-            for (String allowedURI : rolURLMap.get(currentUser.getRoleId())) {
-                if (URLMatcher.matchUrl(contextPath +allowedURI,requestedURI)) {
-                    System.out.println("MATCHED "+requestedURI+" against " + allowedURI);
-                    System.out.println("accepted  for :" + allowedURI);
-                    chain.doFilter(request, response);
-                    return;
-                }
-                System.out.println("checked " + requestedURI + " against "+contextPath + allowedURI+ " NO match!!");
-            }
+    private static boolean isValidSession(HttpSession session) {
+        try {
+            return null != session && null != session.getAttribute("currentUser");
+        } catch (Exception e) {
+            System.out.println("session was already invalidated. ERR MSG:" + e.getMessage());
+            return false;
+        }
+    }
+
+    private void handleLogedInUser(ServletRequest request, ServletResponse response,
+                                   FilterChain chain, String requestedURI, User currentUser) throws IOException, ServletException {
+        if (rolURLMap.containsKey(currentUser.getRoleName())) {
+            handlePathAcess(request, response, chain, requestedURI, currentUser.getRoleName());
+        } else {
+            System.out.println("this user has no role or invalid user");
+            request.getRequestDispatcher("login.jsp")
+                    .include(request, response);
+        }
+    }
+
+    private void handlePathAcess(ServletRequest request,
+                                 ServletResponse response,
+                                 FilterChain chain,
+                                 String requestedURI,
+                                 String key) throws IOException, ServletException {
+
+        String contextPath = ((HttpServletRequest) request).getContextPath();
+        for (String allowedURI : rolURLMap.get(key)) {
+            if (URLMatcher.matchUrl(contextPath + allowedURI, requestedURI)) {
+                System.out.println("MATCHED " + requestedURI + " against " + allowedURI);
+                System.out.println("accepted  for :" + allowedURI);
+                chain.doFilter(request, response);
+                request.setAttribute("isPermitAll", true);
+            } else
+                System.out.println("checked " + requestedURI + " against " + contextPath + allowedURI + " NO match!!");
         }
     }
 

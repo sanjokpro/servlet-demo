@@ -5,7 +5,7 @@
 ${param["username"]}
 <c:if
         test="${!empty sessionScope.currentSessionUser or !null==sessionScope.currentSessionUser}">
-    <c:redirect url="welcome.jsp"></c:redirect>
+    <c:redirect url="dashboard.jsp"></c:redirect>
 </c:if>
 
 <html>

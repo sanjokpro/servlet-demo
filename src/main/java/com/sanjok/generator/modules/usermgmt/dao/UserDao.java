@@ -20,9 +20,7 @@ public class UserDao {
 
     public static void addUser(User user) {
         System.out.println("addStudent()");
-        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); PreparedStatement stmt = conn.prepareStatement("insert into user "
-                + "(username, email, password,role_id) "
-                + "values (?, ?, ?,?)");) {
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); PreparedStatement stmt = conn.prepareStatement("insert into user " + "(username, email, password,role_id) " + "values (?, ?, ?,?)");) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
@@ -37,10 +35,7 @@ public class UserDao {
 
     public static void updateUser(User user) {
         System.out.println("updating user....");
-        try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
-             PreparedStatement stmt = conn.prepareStatement("update user set "
-                     + " username=?, password=?, email=?,role_id=? "
-                     + " where user_id=? ");) {
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); PreparedStatement stmt = conn.prepareStatement("update user set " + " username=?, password=?, email=?,role_id=? " + " where user_id=? ");) {
 
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
@@ -58,9 +53,7 @@ public class UserDao {
 
     public static List<User> getAllUser() {
         List<User> users = new ArrayList<>();
-        try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
-             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             ResultSet rs = stmt.executeQuery("select user_id,username,password,email,role_name from user,role where user.role_id=role.role_id");) {
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); ResultSet rs = stmt.executeQuery("select user_id,username,password,email,role_name from user,role where user.role_id=role.role_id");) {
             while (rs.next()) {
 
                 User user = new User();
@@ -87,21 +80,13 @@ public class UserDao {
         List<User> userList;
         userList = new ArrayList<>();
 
-        try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
-             Statement stmt = conn.createStatement();) {
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); Statement stmt = conn.createStatement();) {
 
 //            String sql = "select * from user u, role r where u.role_id = r.role_id and "
 //                    + "u.username like '%" + user.getUsername()
 //                    + "%' or u.email like '%" + user.getEmail()
 //                    + "%' or r.role_name like '%" + user.getRole_name() + "%'";
-            String sql = "select distinct user.*,role.role_name \n"
-                    + " from role\n"
-                    + "  RIGHT JOIN user\n"
-                    + " ON user.role_id=role.role_id "
-                    + " where username like '%" + user.getUsername() + "%'"
-                    + " or email like '%" + user.getEmail() + "%'"
-                    + " or role_name like '%" + user.getRoleName() + "%'"
-                    + " and user.role_id=role.role_id";
+            String sql = "select distinct user.*,role.role_name \n" + " from role\n" + "  RIGHT JOIN user\n" + " ON user.role_id=role.role_id " + " where username like '%" + user.getUsername() + "%'" + " or email like '%" + user.getEmail() + "%'" + " or role_name like '%" + user.getRoleName() + "%'" + " and user.role_id=role.role_id";
             System.out.println(sql);
             try (ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -127,8 +112,7 @@ public class UserDao {
     }
 
     public static void deleteUser(String id) {
-        try (Connection conn = DBUtil.getConnection(DBType.MYSQL);
-             PreparedStatement stmt = conn.prepareStatement("delete from user  where user_id=?");) {
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); PreparedStatement stmt = conn.prepareStatement("delete from user  where user_id=?");) {
             stmt.setInt(1, Integer.parseInt(id));
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -139,9 +123,7 @@ public class UserDao {
 
     public static User getUserById(int userId) {
         User user = new User();
-        try (
-                Connection conn = DBUtil.getConnection(DBType.MYSQL);
-                PreparedStatement stmt = conn.prepareStatement("select u.*,r.role_name  from user u LEFT JOIN role r ON u.role_id =r.role_id where u.user_id=? ");) {
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); PreparedStatement stmt = conn.prepareStatement("select u.*,r.role_name  from user u LEFT JOIN role r ON u.role_id =r.role_id where u.user_id=? ");) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             System.out.println(stmt);
@@ -164,10 +146,8 @@ public class UserDao {
 
     public static User getUserByUserName(String username) {
         User user = new User();
-        String sql = "select * from user u where u.username=? ";
-        try (
-                Connection conn = DBUtil.getConnection(DBType.MYSQL);
-                PreparedStatement stmt = conn.prepareStatement(sql);) {
+        String sql = "SELECT u.*,r.`role_name` FROM USER u JOIN role r ON u.`role_id`=r.`role_id` where u.username=? ";
+        try (Connection conn = DBUtil.getConnection(DBType.MYSQL); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             System.out.println(stmt);
@@ -177,7 +157,7 @@ public class UserDao {
                 user.setEmail(rs.getString("email"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-//                user.setRoleName(rs.getString("role_name"));
+                user.setRoleName(rs.getString("role_name"));
                 user.setRoleId(rs.getInt("role_id"));
             }
 

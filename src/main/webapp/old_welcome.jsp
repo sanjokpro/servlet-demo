@@ -73,13 +73,13 @@
         <!-- Sidebar content goes here -->
         <div class="py-4 px-4">
             <img src="https://texascollege.edu.np/wp-content/uploads/2021/04/texas-logo.png" alt="Logo"
-                 class="w-30 h-20 logo-normal mb-4 transition-all duration-300">
+                 class="w-16 h-16 logo-normal mb-4 transition-all duration-300">
 
             <c:forEach items="${options}" var="option">
                 <div class="sidebar-item">
                     <div class="sidebar-icon bg-cyan-500 rounded-full flex items-center justify-center">
                         <svg class="w-6 h-6" viewBox="0 0 24 24">
-                            <path fill="white" d="M4 6h16v12H4V6zm12 4h2v4h-2v-4z"></path>
+                            <path fill="gray" d="M4 6h16v12H4V6zm12 4h2v4h-2v-4z"></path>
                         </svg>
                     </div>
                     <span class="sidebar-text"><c:out value="${option}"/></span>
@@ -114,7 +114,7 @@
                 <div class="ml-2">
 
                     <span class="block text-gray-600 text-sm"> ${sessionScope.currentUser.username}</span>
-                    <button class="block text-cyan-600 text-xs mt-1">Logout</button>
+                    <button id="logout" onclick="logout()" class="block text-cyan-600 text-xs mt-1">Logout</button>
                 </div>
             </div>
         </header>
@@ -141,6 +141,10 @@
         sidebar.classList.toggle('sidebar-collapsed');
         logo.classList.toggle('logo-collapsed');
     });
+
+    function logout() {
+        window.location.href = "${pageContext.request.contextPath}/logout?action=logout";
+    }
 </script>
 </body>
 </html>

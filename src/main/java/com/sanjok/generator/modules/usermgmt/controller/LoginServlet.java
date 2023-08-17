@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession(true);//create new session named "session"
                 session.setAttribute("currentSessionUser", user);//add current user object in session attribute called "currentSessionUser"
                 System.out.println("user is valid");
-                response.sendRedirect("welcome.jsp");
+                response.sendRedirect("dashboard.jsp");
 
             } else {
                 String error = "";
@@ -84,7 +84,7 @@ public class LoginServlet extends HttpServlet {
 
         if (request.getParameter("option") != null) {
             System.out.println("loging out...");
-            request.getSession().invalidate();
+//            request.getSession().invalidate();
             System.out.println("loged out success!........now redirecting to logon");
             response.sendRedirect("login.jsp");
         } else {

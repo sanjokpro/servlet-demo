@@ -65,7 +65,7 @@ public class UserServlet extends HttpServlet {
                 viewPage = userService.doDataEntry(request);
                 break;
             case "home":
-                viewPage = "welcome.jsp";
+                viewPage = "dashboard.jsp";
                 break;
             case "signup":
                 viewPage = userService.registerUser(request);

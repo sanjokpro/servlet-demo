@@ -5,5 +5,7 @@
   - /welcome.jsp
   - /user/edit/*
   - /JspDemoServlet
-3:
-  /profile/update
+PERMIT_ALL:
+  - /login.jsp
+  - /login
+  - /logout

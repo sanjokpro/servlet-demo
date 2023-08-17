@@ -1,28 +1,26 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: sk_ne
-  Date: 8/9/2023
-  Time: 3:14 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión - Mi aplicación</title>
+    <title>Texas login</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
 <div class="min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
         <div class="flex justify-center mb-8">
-            <canvas height="50" width="100"/>
             <img src="https://texascollege.edu.np/wp-content/uploads/2021/04/texas-logo.png" alt="Logo"
                  class="w-30 h-20">
         </div>
         <h1 class="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">Please Login</h1>
+        <c:if test="${not empty errorMessage}">
+            <div class="text-pink-500 bg-gray-100 animate-bounce">
+                <div class="text-center"><c:out value="${errorMessage}"/></div>
+            </div>
+        </c:if>
         <form method="post" action="login">
             <div class="mb-6">
                 <label for="username" class="block mb-2 text-sm text-gray-600">User Name</label>
