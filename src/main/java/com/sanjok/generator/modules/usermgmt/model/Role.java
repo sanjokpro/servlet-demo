@@ -10,18 +10,26 @@ import java.io.Serializable;
 /**
  * @author Sanjok
  */
-public class Role extends Permission implements Serializable {
+public class Role implements Serializable {
+    private Permission permission;
     private int id;
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
+    }
+
     private String roleName;
     private String roleDesc;
 
-    @Override
-    public int getRoleId() {
+    public int getId() {
         return id;
     }
 
-    @Override
-    public void setRoleId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

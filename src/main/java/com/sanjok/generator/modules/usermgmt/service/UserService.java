@@ -12,7 +12,6 @@ import com.sanjok.generator.utl.Validation;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
  * @author Sanjok
  */
 public class UserService {
@@ -55,7 +54,7 @@ public class UserService {
         System.out.println(request.getParameter("role" + "-------------------------------------------------------"));
         //---------------------------------------------------------------------------------------
         if (!request.getParameter("role").isEmpty() && request.getParameter("role") != null) {
-            user.setRoleId(Integer.parseInt(request.getParameter("role")));
+            user.getRole().setId(Integer.parseInt(request.getParameter("role")));
             System.out.println(request.getParameter("role"));
         }
 //-----------------------------------------------------------------------------------------------
@@ -76,7 +75,7 @@ public class UserService {
         User user = new User();
         user.setEmail(request.getParameter("search"));
         user.setUsername(request.getParameter("search"));
-        user.setRoleName(request.getParameter("search"));
+        user.getRole().setRoleName(request.getParameter("search"));
 //        System.out.println(request.getParameter("search" + "from userservice"));
         System.out.println("getting all search reasult into 'searchedUsers' attribute");
         request.setAttribute("searchedUsers", UserDao.getUserBySearch(user));

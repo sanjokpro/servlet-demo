@@ -31,7 +31,7 @@ public class UserFilter implements Filter {
                 .getAttribute("currentSessionUser");
 
         if (null != user) {
-            if (user.isQuestionMgmt()) {// Question manage garne permission xa ki
+            if (user.getRole().getPermission().isQuestionMgmt()) {// Question manage garne permission xa ki
                 // xaina ?
                 System.err.println("-----------------------this user has  User_mgmt permission -----------");
                 chain.doFilter(httpServletRequest, httpServletResponse);// allow this request to reach

@@ -29,7 +29,7 @@ public class RoleDao {
 
             stmt.setString(1, role.getRoleName());
             stmt.setString(2, role.getRoleDesc());
-			stmt.setInt(3, role.getPermId());
+			stmt.setInt(3, role.getPermission().getPermId());
             System.out.println("Role added sucessfully !" + stmt);
             if (stmt.execute()) {
                 System.out.println("Role added sucessfully !" + stmt);
@@ -46,10 +46,10 @@ public class RoleDao {
             System.out.println(stmt);
             stmt.setString(1, role.getRoleName());
             stmt.setString(2, role.getRoleDesc());
-			stmt.setInt(3, role.getPermId());
-            stmt.setInt(4, role.getRoleId());
+			stmt.setInt(3, role.getPermission().getPermId());
+            stmt.setInt(4, role.getId());
             stmt.executeUpdate();
-            System.out.println("Role added sucessfully !" + role.getRoleName() + role.getRoleDesc() + role.getRoleId());
+            System.out.println("Role added sucessfully !" + role.getRoleName() + role.getRoleDesc() + role.getId());
 
         } catch (Exception e) {
             DBUtil.processException((SQLException) e);

@@ -56,7 +56,7 @@ public class RoleService {
         role.setRoleDesc(request.getParameter("role_desc"));
         //  --------------------------------------------------------------
         if (!request.getParameter("permission").isEmpty() || request.getParameter("permission") == null) {
-			role.setPermId(Integer.parseInt(request.getParameter("permission")));
+			role.getPermission().setPermId(Integer.parseInt(request.getParameter("permission")));
         }
 //  --------------------------------------------------------------
         System.out.println(request.getParameter("role_name"));
@@ -64,7 +64,7 @@ public class RoleService {
             System.out.println("this is add case! --> ");
             RoleDao.addRole(role);
         } else {
-            role.setRoleId(Integer.parseInt(id));
+            role.setId(Integer.parseInt(id));
             System.out.println("this is update case!" + id);
             RoleDao.updateRole(role);
         }

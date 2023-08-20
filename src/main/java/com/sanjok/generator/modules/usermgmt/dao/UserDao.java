@@ -5,6 +5,7 @@
  */
 package com.sanjok.generator.modules.usermgmt.dao;
 
+import com.sanjok.generator.modules.usermgmt.model.Role;
 import com.sanjok.generator.modules.usermgmt.model.User;
 import com.sanjok.generator.utl.DBType;
 import com.sanjok.generator.utl.DBUtil;
@@ -24,7 +25,7 @@ public class UserDao {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
-            stmt.setInt(4, user.getRoleId());
+            stmt.setInt(4, user.getRole().getId());
             System.out.println(stmt);
             stmt.executeUpdate();
 
@@ -40,7 +41,7 @@ public class UserDao {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getEmail());
-            stmt.setInt(4, user.getRoleId());
+            stmt.setInt(4, user.getRole().getId());
             stmt.setInt(5, user.getId());
             System.out.println(stmt);
             stmt.executeUpdate();
@@ -60,7 +61,7 @@ public class UserDao {
                 user.setId(rs.getInt("user_id"));
                 user.setEmail(rs.getString("email"));
                 user.setUsername(rs.getString("username"));
-                user.setRoleName(rs.getString("role_name"));
+                user.getRole().setRoleName(rs.getString("role_name"));
                 System.out.println(rs.getString("username"));
                 users.add(user);
 
@@ -86,7 +87,7 @@ public class UserDao {
 //                    + "u.username like '%" + user.getUsername()
 //                    + "%' or u.email like '%" + user.getEmail()
 //                    + "%' or r.role_name like '%" + user.getRole_name() + "%'";
-            String sql = "select distinct user.*,role.role_name \n" + " from role\n" + "  RIGHT JOIN user\n" + " ON user.role_id=role.role_id " + " where username like '%" + user.getUsername() + "%'" + " or email like '%" + user.getEmail() + "%'" + " or role_name like '%" + user.getRoleName() + "%'" + " and user.role_id=role.role_id";
+            String sql = "select distinct user.*,role.role_name \n" + " from role\n" + "  RIGHT JOIN user\n" + " ON user.role_id=role.role_id " + " where username like '%" + user.getUsername() + "%'" + " or email like '%" + user.getEmail() + "%'" + " or role_name like '%" + user.getRole().getRoleName() + "%'" + " and user.role_id=role.role_id";
             System.out.println(sql);
             try (ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -96,7 +97,7 @@ public class UserDao {
                     u.setId(rs.getInt("user_id"));
                     u.setUsername(rs.getString("username"));
                     u.setEmail(rs.getString("email"));
-                    u.setRoleName(rs.getString("role_name"));
+                    u.getRole().setRoleName(rs.getString("role_name"));
 
                     userList.add(u);
 
@@ -133,8 +134,8 @@ public class UserDao {
                 user.setEmail(rs.getString("email"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                user.setRoleName(rs.getString("role_name"));
-                user.setRoleId(rs.getInt("role_id"));
+                user.getRole().setRoleName(rs.getString("role_name"));
+                user.getRole().setId(rs.getInt("role_id"));
             }
 
         } catch (SQLException e) {
@@ -153,12 +154,15 @@ public class UserDao {
             System.out.println(stmt);
             if (rs.next()) {
                 user = new User();
+                Role role= new Role();
+                user.setRole(role);
+
                 user.setId(rs.getInt("user_id"));
                 user.setEmail(rs.getString("email"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                user.setRoleName(rs.getString("role_name"));
-                user.setRoleId(rs.getInt("role_id"));
+                user.getRole().setRoleName(rs.getString("role_name"));
+                role.setId(rs.getInt("role_id"));
             }
 
         } catch (SQLException e) {

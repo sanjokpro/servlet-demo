@@ -10,17 +10,18 @@ import java.io.Serializable;
 /**
  * @author Sanjok
  */
-public class User extends Role implements Serializable {
+public class User implements Serializable {
 
+    private Role role;
     private int id;
     private String username;
-    private String password;
-    private String email;
-    public boolean isValid;
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", isValid=" + isValid + '}';
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getId() {
@@ -62,4 +63,14 @@ public class User extends Role implements Serializable {
     public void setValid(boolean valid) {
         isValid = valid;
     }
+
+    private String password;
+    private String email;
+    public boolean isValid;
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + User.this.id + ", username=" + username + ", password=" + password + ", email=" + email + ", isValid=" + isValid + '}';
+    }
+
 }

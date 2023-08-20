@@ -53,12 +53,12 @@ public class LoginDao {
                 id = rs.getInt("userId");
                 user.setUsername(username);
                 user.setPassword(password);
-                user.setRoleName(roleName);
+                user.getRole().setRoleName(roleName);
 //              user.setEmail(rs.getString("email"));
-                user.setAssociate(rs.getString("associate")); 
-				user.setCourseMgmt(rs.getBoolean("courseMgmt"));
-				user.setUserMgmt((rs.getBoolean("userMgmt")));
-				user.setQuestionMgmt((rs.getBoolean("questionMgmt")));
+                user.getRole().getPermission().setAssociate(rs.getString("associate"));
+				user.getRole().getPermission().setCourseMgmt(rs.getBoolean("courseMgmt"));
+				user.getRole().getPermission().setUserMgmt((rs.getBoolean("userMgmt")));
+				user.getRole().getPermission().setQuestionMgmt((rs.getBoolean("questionMgmt")));
                 user.setId(id);
                 user.setValid(true);
             }

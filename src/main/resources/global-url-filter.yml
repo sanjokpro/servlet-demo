@@ -1,11 +1,14 @@
-2:
+ROLE_ADMIN:
   - /admin/*
   - /admin/edit/*
-1:
+ROLE_STAFF:
   - /welcome.jsp
   - /user/edit/*
   - /JspDemoServlet
-PERMIT_ALL:
+ROLE_ANONYMOUS:
   - /login.jsp
   - /login
   - /logout
+  - /getUserJson
+    
+  

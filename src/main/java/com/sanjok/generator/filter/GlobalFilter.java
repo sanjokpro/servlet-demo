@@ -36,9 +36,9 @@ public class GlobalFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession(false);
         String servletPath = httpRequest.getRequestURI();
-        handlePathAcess(request, response, chain, servletPath, "PERMIT_ALL");
-        if (null!=request.getAttribute("isPermitAll")) {
-            System.out.println("url was listed in PERMIT_ALL . so no further processing required");
+        handlePathAcess(request, response, chain, servletPath, "ROLE_ANONYMOUS");
+        if (null != request.getAttribute("isPermitAll")) {
+            System.out.println("url was listed in ROLE_ANONYMOUS . so no further processing required");
             return;
         }
         if (!isValidSession(session)) {
@@ -62,8 +62,8 @@ public class GlobalFilter implements Filter {
 
     private void handleLogedInUser(ServletRequest request, ServletResponse response,
                                    FilterChain chain, String requestedURI, User currentUser) throws IOException, ServletException {
-        if (rolURLMap.containsKey(currentUser.getRoleName())) {
-            handlePathAcess(request, response, chain, requestedURI, currentUser.getRoleName());
+        if (rolURLMap.containsKey(currentUser.getRole().getRoleName())) {
+            handlePathAcess(request, response, chain, requestedURI, currentUser.getRole().getRoleName());
         } else {
             System.out.println("this user has no role or invalid user");
             request.getRequestDispatcher("login.jsp")
@@ -81,7 +81,8 @@ public class GlobalFilter implements Filter {
         for (String allowedURI : rolURLMap.get(key)) {
             if (URLMatcher.matchUrl(contextPath + allowedURI, requestedURI)) {
                 System.out.println("MATCHED " + requestedURI + " against " + allowedURI);
-                System.out.println("accepted  for :" + allowedURI);
+                System.out.println("request accepted for path:" + allowedURI );
+                System.out.println("request accepted for role:" + key );
                 chain.doFilter(request, response);
                 request.setAttribute("isPermitAll", true);
             } else
